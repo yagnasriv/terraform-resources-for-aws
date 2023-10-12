@@ -7,12 +7,16 @@ on:
   workflow_dispatch:
     
 env: 
-  WORKIN-DIR: Terraform
+  WORKING-DIR: Terraform
 
 jobs:
   terraform_plan:
     name: TF plan dev
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./${{ env.WORKING_DIR }}
     
     steps:
       - name: checkout
@@ -27,7 +31,7 @@ jobs:
       
       - name: install
         env:
-          TF_VERSION: "1.2.3"
+          TF_VERSION: "1.6.1"
         run: terraform version
       
       - name: Terraform init
