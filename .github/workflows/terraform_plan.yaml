@@ -20,7 +20,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.5.7
-          terraform_config: 'aws-infrastructure/'
+          terraform_config: './aws-infrastructure'
 
       - name: Configure AWS Credentials
         run: |
