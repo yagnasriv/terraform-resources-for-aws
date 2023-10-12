@@ -23,7 +23,6 @@ jobs:
           terraform_config: 'aws-infrastructure'
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
         run: |
           echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}"
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
