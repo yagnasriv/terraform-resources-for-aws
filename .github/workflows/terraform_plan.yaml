@@ -28,7 +28,7 @@ jobs:
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
       
       - name: Initialize Terraform
-        run: terraform inti
+        run: terraform init
 
       - name: Validate Terraform configuration
         run: terraform validate
