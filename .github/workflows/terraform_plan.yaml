@@ -36,3 +36,7 @@ jobs:
       - name: Terraform plan       #### Lists the resources that will be created on AWS Cloud Platform 
         run: terraform plan
         working-directory: aws-infrastructure
+      
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        working-directory: aws-infrastructure
