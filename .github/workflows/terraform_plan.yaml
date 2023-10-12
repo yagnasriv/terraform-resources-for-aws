@@ -1,8 +1,8 @@
-name: Verify Feature
+name: Verify Feature     ### Name of the workflow
 
 on:
   pull_request:
-    branches:
+    branches:  ### working Branch name / main/ master branch
       - main
   workflow_dispatch:
 
@@ -20,7 +20,7 @@ jobs:
         with:
           terraform_version: 1.5.7
 
-      - name: Configure AWS Credentials
+      - name: Configure AWS Credentials      #### Enter the credentials which were added to the repo secrets (AWS ACCESS KEY ID AND SECRET)
         run: |
           echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
@@ -33,6 +33,6 @@ jobs:
         run: terraform validate
         working-directory: aws-infrastructure
 
-      - name: Terraform plan
+      - name: Terraform plan       #### Lists the resources that will be created on AWS Cloud Platform 
         run: terraform plan
         working-directory: aws-infrastructure
