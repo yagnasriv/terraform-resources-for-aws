@@ -27,8 +27,8 @@ jobs:
     
       - name: Initialize Terraform
         run: terraform init
-        working-directory: 'aws-infrastructure/main.tf'
+        working-directory: aws-infrastructure/main.tf
 
       - name: Validate Terraform configuration
         run: terraform validate
-        working-directory: 'aws-infrastructure/main.tf'
+        working-directory: aws-infrastructure/main.tf
