@@ -32,3 +32,7 @@ jobs:
       - name: Validate Terraform configuration
         run: terraform validate
         working-directory: aws-infrastructure
+
+      - name: Terraform plan
+        run: terraform plan
+        working-directory: aws-infrastructure
