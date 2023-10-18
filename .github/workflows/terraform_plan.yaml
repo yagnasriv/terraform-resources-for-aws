@@ -30,7 +30,7 @@ jobs:
       - name: Initialize Terraform
         run: |
           terraform init \
-            -backend=config="${{ env.TF_BACKEND_CONFIG }}"
+            -backend-config="${{ env.TF_BACKEND_CONFIG }}"
         working-directory: aws-infrastructure
 
       - name: Validate Terraform configuration
