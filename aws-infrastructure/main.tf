@@ -9,7 +9,7 @@ terraform {
   backend "s3" {
 
     bucket = "terraform-s3-state-yv"
-    key = "terraform.tfstate"
+    key = "project1"
     region = "us-east-1"
     
   }
