@@ -9,11 +9,11 @@ terraform {
 
 
 provider "aws" {
-  region     = "us-east-1"
+  region     = var.region
 }
 
 resource "aws_instance" "this" {
-  ami                     = "ami-053b0d53c279acc90"
-  instance_type           = "t2.micro"
-  subnet_id               = "subnet-088463813c6744d33"
+  ami                     = var.ami
+  instance_type           = var.instance_type
+  subnet_id               = var.subnet_id
 }
