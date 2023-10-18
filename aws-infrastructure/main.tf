@@ -5,6 +5,13 @@ terraform {
       version = "~> 5.0"
     }
   }
+
+  backend "s3" {
+    bucket = "terraform-s3-state-yv"
+    key = ""
+    region = "us-east-1"
+    
+  }
 }
 
 
