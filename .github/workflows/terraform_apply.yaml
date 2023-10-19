@@ -1,4 +1,4 @@
-name: Terraform Apply
+name: Terraform Apply  ### Workflow for creating AWS resources 
 
 on:
   pull_request:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   terraform-validate:
-    name: Terraform Apply
+    name: Terraform Apply dev
     runs-on: ubuntu-latest
 
     steps:

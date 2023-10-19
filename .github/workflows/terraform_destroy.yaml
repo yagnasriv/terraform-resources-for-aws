@@ -1,10 +1,10 @@
-name: Terraform Destroy
+name: Terraform Destroy ### workflow for destroying the resources on aws 
 
 on:
   pull_request:
     branches:
       - main
-  workflow_dispatch:  # Manually trigger the workflow
+  workflow_dispatch:  # Manually triggers the workflow
 
 jobs:
   destroy-resources:
