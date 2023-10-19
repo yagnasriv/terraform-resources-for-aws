@@ -30,8 +30,8 @@ jobs:
 
     - name: Configure Backend with Existing S3 Bucket
       run: |
-        # Replace <your-existing-s3-bucket-name> with your actual S3 bucket name
-        S3_BUCKET_NAME="terraform-state-s3-yv"
+        
+        S3_BUCKET_NAME="terraform-state-s3-yv"   # Replace <your-existing-s3-bucket-name> with your actual S3 bucket name
 
         # Configure AWS CLI with the provided credentials and S3 bucket name
         aws configure set aws-access-key-id $AWS_ACCESS_KEY_ID
@@ -40,7 +40,7 @@ jobs:
         aws configure set preview.cloudfront true
 
         # Initialize Terraform with the existing S3 bucket as the backend
-        terraform init -backend-config="bucket=$S3_BUCKET_NAME"
+        terraform init -backend-config="key=$S3_BUCKET_NAME"
 
       
 
@@ -52,8 +52,8 @@ jobs:
       run: terraform plan -out=tfplan
       working-directory: aws-infrastructure
 
-    - name: Apply Terraform Changes
-      run: |
-        # Apply Terraform changes
-        terraform apply -auto-approve "tfplan"
-      working-directory: aws-infrastructure
+    # - name: Apply Terraform Changes
+    #   run: |
+    #     # Apply Terraform changes
+    #     terraform apply -auto-approve "tfplan"
+    #   working-directory: aws-infrastructure
