@@ -40,7 +40,7 @@ jobs:
         aws configure set preview.cloudfront true
 
         # Initialize Terraform with the existing S3 bucket as the backend
-        terraform init -backend-config="key=$S3_BUCKET_NAME"
+        terraform init -backend-config="bucket=$S3_BUCKET_NAME"
 
       
 
