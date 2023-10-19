@@ -25,7 +25,7 @@ jobs:
     - name: Create S3 Bucket
       run: |
         aws s3api create-bucket \
-          --bucket terraform_state_s3_yv \
+          --bucket terraform-state-s3-yv \
           --region us-east-1  # Change this to your desired AWS region
 
     - name: Configure Backend
