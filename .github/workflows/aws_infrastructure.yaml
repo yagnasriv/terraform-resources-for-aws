@@ -10,6 +10,9 @@ jobs:
   create-infrastructure:
     runs-on: ubuntu-latest
 
+    env:
+      TF_BACKEND_CONFIG: "s3://terraform-s3-state-yv/terraform.tfstate"
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -20,7 +23,8 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1  # Change this to your desired AWS region
-        S3_BUCKET_NAME: "s3://terraform-s3-state-yv/terraform.tfstate"
+        S3_BUCKET_NAME: ${{ env.TF_BACKEND_CONFIG }}
+        working-directory: aws-infrastructure
 
 
     - name: Configure Backend with S3
@@ -32,11 +36,11 @@ jobs:
         aws configure set preview.cloudfront true
 
         # Initialize backend with S3
-        terraform init -backend-config="bucket=${{ env.S3_BUCKET_NAME }}"
+        terraform init -backend-config="bucket=${{ env.TF_BACKEND_CONFIG }}"
 
-        # Optionally, apply Terraform configuration to create infrastructure
-        # terraform apply -auto-approve
+      working-directory: aws-infrastructure
 
     - name: Display S3 Bucket Name
       run: |
-        echo "S3 Bucket Name: ${{ env.S3_BUCKET_NAME }}"
+        echo "S3 Bucket Name: ${{ env.TF_BACKEND_CONFIG }}"
+      working-directory: aws-infrastructure
