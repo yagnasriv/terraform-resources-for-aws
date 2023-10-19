@@ -21,14 +21,24 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1  # Change this to your desired AWS region
 
+    
+    - name: Configure Backend with Existing S3 Bucket
+      run: |
+        
+        S3_BUCKET_NAME="terraform-state-s3-yv"   # Replace <your-existing-s3-bucket-name> with your actual S3 bucket name
+
+        # Configure AWS CLI with the provided credentials and S3 bucket name
+        aws configure set aws-access-key-id $AWS_ACCESS_KEY_ID
+        aws configure set aws-secret-access-key $AWS_SECRET_ACCESS_KEY
+        aws configure set region us-east-1  # Change this to your desired AWS region
+        aws configure set preview.cloudfront true
+
+        # Initialize Terraform with the existing S3 bucket as the backend
+        terraform init -backend-config="bucket=$S3_BUCKET_NAME"
+
+
     - name: Destroy AWS Resources
       run: |
-        # Navigate to the directory containing your Terraform configuration
-        cd aws-infrastructure
-
-        # Initialize Terraform with backend configuration
-        terraform init
-
         # Select the workspace (if using workspaces)
         # terraform workspace select my-workspace
 
