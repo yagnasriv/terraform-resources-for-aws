@@ -1,0 +1,40 @@
+name: AWS Infrastructure
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    
+
+jobs:
+  create-infrastructure:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up AWS CLI
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1  # Change this to your desired AWS region
+
+    - name: Create S3 Bucket
+      run: |
+        aws s3api create-bucket \
+          --bucket my-awesome-bucket \
+          --region us-east-1  # Change this to your desired AWS region
+
+    - name: Configure Backend
+      run: |
+        # Add backend configuration steps here
+        # For example, deploy backend code or configure backend services
+        echo "BACKEND_CONFIG=production" >> $GITHUB_ENV
+        # You might use tools like AWS CLI or other configuration management tools
+
+    - name: Display Backend Configuration
+      run: echo "Backend Configuration: $BACKEND_CONFIG"
+
