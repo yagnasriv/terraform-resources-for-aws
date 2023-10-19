@@ -51,3 +51,9 @@ jobs:
     - name: Terraform plan       #### Lists the resources that will be created on AWS Cloud Platform
       run: terraform plan -out=tfplan
       working-directory: aws-infrastructure
+
+    - name: Apply Terraform Changes
+      run: |
+        # Apply Terraform changes
+        terraform apply -auto-approve "tfplan"
+      working-directory: aws-infrastructure
