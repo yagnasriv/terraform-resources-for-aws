@@ -1,46 +1,53 @@
-name: Verify Feature     ### Name of the workflow
+name: Terraform Validate and Plan
 
 on:
   pull_request:
-    branches:  ### working Branch name / main/ master branch
-      - tf-working-branch
+    branches:
+      - main
   workflow_dispatch:
 
-
 jobs:
-  terraform_plan:
+  terraform-validate:
     name: TF plan dev
     runs-on: ubuntu-latest
 
-    env:
-      TF_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      TF_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      TF_aws_default_region: "us-east-1"
-      TF_BACKEND_CONFIG: "s3://terraform-s3-state-yv/terraform.tfstate"
-
     steps:
-      - name: checkout code
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: 1.5.7
+    
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.5.7
 
+    - name: Set up AWS CLI
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: "us-east-1"
 
-      - name: Initialize Terraform
-        run: |
-          terraform init -backend-config=key="${{ env.TF_BACKEND_CONFIG }}" -input=false
-        working-directory: aws-infrastructure
+    - name: Configure Backend with Existing S3 Bucket
+      run: |
+        
+        S3_BUCKET_NAME="terraform-state-s3-yv"   # Replace <your-existing-s3-bucket-name> with your actual S3 bucket name
 
-      - name: Validate Terraform configuration
-        run: terraform validate
-        working-directory: aws-infrastructure
+        # Configure AWS CLI with the provided credentials and S3 bucket name
+        aws configure set aws-access-key-id $AWS_ACCESS_KEY_ID
+        aws configure set aws-secret-access-key $AWS_SECRET_ACCESS_KEY
+        aws configure set region us-east-1  # Change this to your desired AWS region
+        aws configure set preview.cloudfront true
 
-      - name: Terraform plan       #### Lists the resources that will be created on AWS Cloud Platform 
-        run: terraform plan -out=tfplan
-        working-directory: aws-infrastructure
+        # Initialize Terraform with the existing S3 bucket as the backend
+        terraform init -backend-config="bucket=$S3_BUCKET_NAME"
+
       
-      # - name: Terraform Apply
-      #   run: terraform apply -auto-approve
-      #   working-directory: aws-infrastructure
+
+        # Validate Terraform configuration
+        terraform validate
+      working-directory: aws-infrastructure
+
+    - name: Terraform plan       #### Lists the resources that will be created on AWS Cloud Platform
+      run: terraform plan -out=tfplan
+      working-directory: aws-infrastructure
