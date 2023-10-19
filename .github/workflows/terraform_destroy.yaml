@@ -1,0 +1,38 @@
+name: Destroy AWS Resources
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:  # Manually trigger the workflow
+
+jobs:
+  destroy-resources:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up AWS CLI
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1  # Change this to your desired AWS region
+
+    - name: Destroy AWS Resources
+      run: |
+        # Navigate to the directory containing your Terraform configuration
+        cd aws-infrastructure
+
+        # Initialize Terraform with backend configuration
+        terraform init
+
+        # Select the workspace (if using workspaces)
+        # terraform workspace select my-workspace
+
+        # Destroy AWS resources
+        terraform destroy -auto-approve
+      working-directory: aws-infrastructure
+
