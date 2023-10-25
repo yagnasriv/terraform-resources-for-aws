@@ -1,0 +1,57 @@
+name: Deploy AWS Infrastructure using single workflow
+
+#### Below is an example of a simplified GitHub Actions workflow that deploys AWS infrastructure using Terraform. 
+#### This workflow assumes you have your Terraform code in your repository, and it deploys an AWS resource
+
+
+on:
+  pull_request:
+    branches:
+      - main  # Adjust to your repository's default branch
+  workflow_dispatch:
+
+
+jobs:
+  single-workflow:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.6.2  # Replace with your desired Terraform version
+
+    - name: Set up AWS CLI
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id:      ${{ secrets.AWS_ACCESS_KEY_ID }}  ### Refer to repository for secret key id and access key
+        aws-secret-access-key:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region:             "us-east-1"
+
+    - name: Initialize Terraform
+      run: terraform init
+      working-directory: setting_up_Redis_cluster  # Adjust to your Terraform code location
+
+    - name: Terraform validate
+      run: terraform validate
+      working-directory: setting_up_Redis_cluster
+
+    - name: Plan Terraform Changes
+      run: terraform plan -out=tfplan
+      working-directory: setting_up_Redis_cluster
+
+    # - name: Apply Terraform Changes
+    #   run: terraform apply -input=false tfplan
+    #   working-directory: setting_up_Redis_cluster
+    #   env:
+    #     aws-access-key-id:      ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #     aws-secret-access-key:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #     aws-region:             "us-east-1"  # Adjust to your desired AWS region
+    #   # Be sure to configure your GitHub repository secrets for AWS access keys
+
+    # - name: Clean Up Terraform Files
+    #   run: rm -f tfplan
+    #   working-directory: setting_up_Redis_cluster
