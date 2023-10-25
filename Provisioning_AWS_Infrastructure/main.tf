@@ -20,13 +20,18 @@ provider "aws" {
   region     = var.region
 }
 
-# resource "aws_instance" "this" {
-#   ami                     = var.ami
-#   instance_type           = var.instance_type
-#   subnet_id               = var.subnet_id
-# }
+
+# Example for Creating AWS EC2 Instance 
+
+resource "aws_instance" "this" {
+  ami                     = var.ami
+  instance_type           = var.instance_type
+  subnet_id               = var.subnet_id
+}
 
 
+
+# Example for Creating a S3 bucket 
 resource "aws_s3_bucket" "example" {
   bucket = "my-tf-test-bucket-yv"
 
@@ -34,4 +39,9 @@ resource "aws_s3_bucket" "example" {
     Name        = "My bucket"
     Environment = "Dev"
   }
+
+  versioning {
+     enabled = true
+  }
+
 }
