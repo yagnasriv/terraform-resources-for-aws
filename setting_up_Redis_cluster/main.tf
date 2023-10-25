@@ -26,7 +26,7 @@ resource "aws_elasticache_cluster" "example" {
   parameter_group_name = "default.redis5.0"
   port                 = 6379
   subnet_group_name    = aws_elasticache_subnet_group.example.name
-  security_group_ids   = "sg-03b3f6c4ade634dd5"
+  security_group_ids   = ["sg-03b3f6c4ade634dd5"]
   tags = {
     Name = "MyRedisCluster-YV"
   }
