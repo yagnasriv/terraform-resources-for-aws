@@ -33,15 +33,15 @@ jobs:
 
     - name: Initialize Terraform
       run: terraform init
-      working-directory: setting_up_Redis_cluster  # Adjust to your Terraform code location
+      working-directory: aws_resource_backup  # Adjust to your Terraform code location
 
     - name: Terraform validate
       run: terraform validate
-      working-directory: setting_up_Redis_cluster
+      working-directory: aws_resource_backup
 
     - name: Plan Terraform Changes
       run: terraform plan -out=tfplan
-      working-directory: setting_up_Redis_cluster
+      working-directory: aws_resource_backup
 
     # - name: Apply Terraform Changes
     #   run: terraform apply -input=false tfplan
