@@ -48,3 +48,13 @@ resource "aws_s3_bucket_public_access_block" "destination_bucket_block" {
 #     },
 #   ]
 # }
+
+# Enabling versioning backup for a S3 bucket.
+
+# resource "aws_s3_bucket" "example_bucket" {
+#   bucket = "your-bucket-name"
+
+#   versioning {
+#     enabled = true
+#   }
+# }
