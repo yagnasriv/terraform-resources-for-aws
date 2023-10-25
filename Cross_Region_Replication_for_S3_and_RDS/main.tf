@@ -41,7 +41,7 @@ resource "aws_s3_bucket_public_access_block" "destination_bucket_block" {
 
 
 
-### Cross Region Replication for AWS RDS 
+### Cross Region Replication for AWS RDS - mysql
 
 
 resource "aws_db_instance" "source_instance" {
@@ -56,10 +56,7 @@ resource "aws_db_instance" "source_instance" {
   publicly_accessible  = false
 }
 
-provider "aws" {
-  alias  = "us-west-2"  # Create an alias for the destination region
-  region = "us-west-2"  # Set your destination region
-}
+
 
 resource "aws_db_instance" "destination_replica" {
   provider             = aws.us-west-2  # Use the alias to specify the destination region
@@ -74,5 +71,5 @@ resource "aws_db_instance" "destination_replica" {
   publicly_accessible  = false
 
   # Specify the source DB instance to replicate from
-  aws_db_instance = aws_db_instance.source_instance.id
+  source_db_instance_identifier = aws_db_instance.source_instance.id
 }
