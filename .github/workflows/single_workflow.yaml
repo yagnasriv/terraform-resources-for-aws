@@ -33,15 +33,15 @@ jobs:
 
     - name: Initialize Terraform
       run: terraform init
-      working-directory: aws_resource_backup  # Adjust to your Terraform code location
+      working-directory: S3_Bucket_with_Backup  # Adjust to your Terraform code location
 
     - name: Terraform validate
       run: terraform validate
-      working-directory: aws_resource_backup
+      working-directory: S3_Bucket_with_Backup
 
     - name: Plan Terraform Changes
       run: terraform plan -out=tfplan
-      working-directory: aws_resource_backup
+      working-directory: S3_Bucket_with_Backup
 
     # - name: Apply Terraform Changes
     #   run: terraform apply -input=false tfplan

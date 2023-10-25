@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "source_bucket" {
-  bucket = "source-bucket-name"
+  bucket = "source-bucket-name-yv"
 }
 
 provider "aws" {
@@ -13,7 +13,7 @@ provider "aws" {
 
 resource "aws_s3_bucket" "destination_bucket" {
   provider = aws.us-west-2  # Use the alias to specify the destination region
-  bucket   = "destination-bucket-name"
+  bucket   = "destination-bucket-name-yv"
 }
 
 resource "aws_s3_bucket_public_access_block" "source_bucket_block" {
