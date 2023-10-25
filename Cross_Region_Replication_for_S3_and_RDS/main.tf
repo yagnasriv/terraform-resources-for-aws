@@ -71,5 +71,5 @@ resource "aws_db_instance" "destination_replica" {
   publicly_accessible  = false
 
   # Specify the source DB instance to replicate from
-  source_db_instance_identifier = aws_db_instance.source_instance.id
+  # source_db_instance_identifier = aws_db_instance.source_instance.id
 }
