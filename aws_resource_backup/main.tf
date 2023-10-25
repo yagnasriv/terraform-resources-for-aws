@@ -4,8 +4,20 @@
 
 
 resource "aws_ebs_snapshot" "example_snapshot" {
-  volume_id = "vol-07b9f8e7277bbc5f4"  # Replace with your EBS volume ID
+  volume_id = "vol-07b9f8e7277bbc5f4"
+  storage_tier = "standard"  # Replace with your EBS volume ID
+  
   tags = {
     Name = "MyBackup-YV"
+  }
+}
+
+resource "aws_backup_plan" "example" {
+  name = "my-backup-plan"
+  rule {
+    rule_name         = "daily-backup"
+    target_vault_name = "my-backup-vault"
+    schedule          = "cron(0 12 * * ? *)"
+    start_window      = 360
   }
 }
