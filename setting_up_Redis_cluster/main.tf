@@ -34,5 +34,6 @@ resource "aws_elasticache_cluster" "example" {
 
 resource "aws_elasticache_subnet_group" "example" {
   name       = "my-cache-subnet-yv"
-  subnet_ids = "subnet-0faeccfe09c516254"
+  subnet_ids = [subnet-0faeccfe09c516254,
+                subnet-0a135ebade0072a07]
 }
