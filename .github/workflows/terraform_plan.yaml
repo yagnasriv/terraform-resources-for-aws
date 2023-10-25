@@ -46,8 +46,8 @@ jobs:
 
     
         terraform validate    ### Validate Terraform configuration
-      working-directory: aws-infrastructure
+      working-directory: setting_up_Redis_cluster
 
     - name: Terraform plan       #### Lists the resources that will be created on AWS Cloud Platform
       run: terraform plan -out=tfplan
-      working-directory: aws-infrastructure
+      working-directory: setting_up_Redis_cluster
