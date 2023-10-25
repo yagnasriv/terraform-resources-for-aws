@@ -20,12 +20,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "example_lifecycle" {
     id      = "example-archive-rule"
     status  = "Enabled"
 
-    prefix = ""
-
-    transitions {
-      days          = 30  # Archive to Glacier after 30 days
-      storage_class = "GLACIER"
-    }
+    prefix = "logs/"
 
     expiration {
       days = 365  # Permanently delete after 365 days in Glacier
