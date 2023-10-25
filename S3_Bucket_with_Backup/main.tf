@@ -34,17 +34,17 @@ resource "aws_s3_bucket_public_access_block" "destination_bucket_block" {
   restrict_public_buckets = true
 }
 
-resource "aws_s3_bucket_replication" "example" {
-  role  = "arn:aws:iam::123456789012:role/ReplicationRole"  # Specify your replication role ARN
+# resource "aws_s3_bucket_replication" "example" {
+#   role  = "arn:aws:iam::123456789012:role/ReplicationRole"  # Specify your replication role ARN
 
-  source_bucket      = aws_s3_bucket.source_bucket.id
-  destination_bucket = aws_s3_bucket.destination_bucket.id
+#   source_bucket      = aws_s3_bucket.source_bucket.id
+#   destination_bucket = aws_s3_bucket.destination_bucket.id
 
-  rules = [
-    {
-      id     = "allObjects",
-      status = "Enabled",
-      prefix = "",
-    },
-  ]
-}
+#   rules = [
+#     {
+#       id     = "allObjects",
+#       status = "Enabled",
+#       prefix = "",
+#     },
+#   ]
+# }
