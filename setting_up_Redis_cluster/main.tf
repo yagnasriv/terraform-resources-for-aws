@@ -25,9 +25,14 @@ resource "aws_elasticache_cluster" "example" {
   num_cache_nodes      = 1
   parameter_group_name = "default.redis5.0"
   port                 = 6379
-  subnet_group_name    = aws_db_subnet_group.example.name
-  security_group_ids   = [aws_security_group.example.id]
+  subnet_group_name    = aws_elasticache_subnet_group.example.name
+  security_group_ids   = [sg-03b3f6c4ade634dd5]
   tags = {
-    Name = "MyRedisCluster"
+    Name = "MyRedisCluster-YV"
   }
+}
+
+resource "aws_elasticache_subnet_group" "example" {
+  name       = "my-cache-subnet-yv"
+  subnet_ids = [subnet-0faeccfe09c516254]
 }
