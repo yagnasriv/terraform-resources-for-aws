@@ -45,3 +45,18 @@ resource "aws_db_instance" "example" {
   backup_retention_period = 1  # Retain backups for 1 days
   backup_window           = "03:00-04:00"  # Backup window
 }
+
+
+# Enabling versioning backup for a S3 bucket.
+
+provider "aws" {
+  region = "us-east-1"
+}
+
+resource "aws_s3_bucket" "example_bucket" {
+  bucket = "your-bucket-name"
+
+  versioning {
+    enabled = true
+  }
+}
