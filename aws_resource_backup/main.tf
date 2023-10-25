@@ -49,10 +49,6 @@ resource "aws_db_instance" "example" {
 
 # Enabling versioning backup for a S3 bucket.
 
-provider "aws" {
-  region = "us-east-1"
-}
-
 resource "aws_s3_bucket" "example_bucket" {
   bucket = "your-bucket-name"
 
