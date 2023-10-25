@@ -33,15 +33,15 @@ jobs:
 
     - name: Initialize Terraform
       run: terraform init
-      working-directory: Cross_Region_Replication_for_S3_and_RDS  # Adjust to your Terraform code location
+      working-directory: RBAC  # Adjust to your Terraform code location
 
     - name: Terraform validate
       run: terraform validate
-      working-directory: Cross_Region_Replication_for_S3_and_RDS
+      working-directory: RBAC
 
     - name: Plan Terraform Changes
       run: terraform plan -out=tfplan
-      working-directory: Cross_Region_Replication_for_S3_and_RDS
+      working-directory: RBAC
 
     # - name: Apply Terraform Changes
     #   run: terraform apply -input=false tfplan
