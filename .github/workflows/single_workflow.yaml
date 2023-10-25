@@ -33,15 +33,15 @@ jobs:
 
     - name: Initialize Terraform
       run: terraform init
-      working-directory: Data_Archiving  # Adjust to your Terraform code location
+      working-directory: Data_Archiving_for_S3  # Adjust to your Terraform code location
 
     - name: Terraform validate
       run: terraform validate
-      working-directory: Data_Archiving
+      working-directory: Data_Archiving_for_S3
 
     - name: Plan Terraform Changes
       run: terraform plan -out=tfplan
-      working-directory: Data_Archiving
+      working-directory: Data_Archiving_for_S3
 
     # - name: Apply Terraform Changes
     #   run: terraform apply -input=false tfplan
