@@ -78,7 +78,7 @@ resource "aws_rds_cluster" "default" {
   cluster_identifier      = "aurora-cluster-demo"
   engine                  = "aurora-mysql"
   engine_version          = "5.7.mysql_aurora.2.03.2"
-  availability_zones      = "us-east-1a"
+  availability_zones      = ["us-east-1a", "us-east-ib"]
   database_name           = "aurora-mysql-cluster-yv"
   master_username         = "yagna"
   master_password         = "password"
@@ -97,7 +97,7 @@ resource "aws_rds_cluster" "aurora_cluster" {
   backup_retention_period = 7
   preferred_backup_window = "07:00-09:00"
   skip_final_snapshot     = true
-  availability_zones      = "us-east-1a"
+  availability_zones      = ["us-east-1a", "us-east-1b"]
 
   scaling_configuration {
     auto_pause                = true
