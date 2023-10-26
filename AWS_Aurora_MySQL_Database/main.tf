@@ -88,7 +88,7 @@ resource "aws_rds_cluster" "default" {
 
 resource "aws_rds_cluster" "aurora_cluster" {
   cluster_identifier      = "my-aurora-cluster"
-  engine                  = "aurora"
+  engine                  = "aurora-mysql"
   engine_version          = "5.7.12"
   master_username         = "dbadmin"
   master_password         = "dbpassword"
