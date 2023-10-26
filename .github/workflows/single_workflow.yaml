@@ -33,15 +33,15 @@ jobs:
 
     - name: Initialize Terraform
       run: terraform init
-      working-directory: AWS_Aurora_MySQL_Database  # Adjust to your Terraform code location
+      working-directory: ECS_Cluster  # Adjust to your Terraform code location
 
     - name: Terraform validate
       run: terraform validate
-      working-directory: AWS_Aurora_MySQL_Database
+      working-directory: ECS_Cluster
 
     - name: Plan Terraform Changes
       run: terraform plan -out=tfplan
-      working-directory: AWS_Aurora_MySQL_Database
+      working-directory: ECS_Cluster
 
     # - name: Apply Terraform Changes
     #   run: terraform apply -input=false tfplan
