@@ -15,54 +15,73 @@ provider "aws" {
 }
 
 
-### Provides an RDS DB subnet group resource
-resource "aws_db_subnet_group" "aurora_subnet_group" {
-  name        = "aurora-subnet-group"
-  description = "Aurora subnet group"
-  subnet_ids  = ["subnet-0a135ebade0072a07", "subnet-088463813c6744d33"]  # Replace with your subnet IDs
-}
+# ### Provides an RDS DB subnet group resource
+# resource "aws_db_subnet_group" "aurora_subnet_group" {
+#   name        = "aurora-subnet-group"
+#   description = "Aurora subnet group"
+#   subnet_ids  = ["subnet-0a135ebade0072a07", "subnet-088463813c6744d33"]  # Replace with your subnet IDs
+# }
 
 
-### Provides a security group resource.
-resource "aws_security_group" "aurora_db_sg" {
-  name        = "aurora-db-sg"
-  description = "Aurora database security group"
-  vpc_id      = "vpc-0ba0c613b634a5b11"
+# ### Provides a security group resource.
+# resource "aws_security_group" "aurora_db_sg" {
+#   name        = "aurora-db-sg"
+#   description = "Aurora database security group"
+#   vpc_id      = "vpc-0ba0c613b634a5b11"
 
-  # Define security group rules for database access
-  ingress {
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Restrict this as needed for security
-  }
-}
-
-
-
-resource "aws_db_parameter_group" "aurora_db_parameter_group" {
-  name = "aurora-db-parameter-group"
-  family = "aurora-mysql5.7"
-  description = "Aurora database parameter group"
-}
+#   # Define security group rules for database access
+#   ingress {
+#     from_port   = 3306
+#     to_port     = 3306
+#     protocol    = "tcp"
+#     cidr_blocks = ["0.0.0.0/0"]  # Restrict this as needed for security
+#   }
+# }
 
 
-resource "aws_db_instance" "aurora_db" {
-  allocated_storage    = 8
-  storage_type         = "gp2"
-  engine               = "aurora"
-  engine_version       = "5.7.mysql_aurora.2.03.2"
-  instance_class       = "db.t3.micro"
-  db_name              = "aurora-instance"
-  username             = "yagna"
-  password             = "password"
-  db_subnet_group_name = aws_db_subnet_group.aurora_subnet_group.name
-  vpc_security_group_ids = [aws_security_group.aurora_db_sg.id]
-  parameter_group_name  = aws_db_parameter_group.aurora_db_parameter_group.name
 
-  # Optional: Additional configuration settings, like backup retention, can be added here
-}
+# resource "aws_db_parameter_group" "aurora_db_parameter_group" {
+#   name = "aurora-db-parameter-group"
+#   family = "aurora-mysql5.7"
+#   description = "Aurora database parameter group"
+# }
 
-output "aurora_endpoint" {
-  value = aws_db_instance.aurora_db.endpoint
+### Use aws_db_instance when You need a standalone database instance (e.g., Amazon RDS for MySQL, PostgreSQL, SQL Server) 
+### and don't require the advanced features of an Aurora cluster.
+# resource "aws_db_instance" "aurora_db" {
+#   allocated_storage    = 8
+#   storage_type         = "gp2"
+#   engine               = "aurora"
+#   engine_version       = "5.7.mysql_aurora.2.03.2"
+#   instance_class       = "db.t3.micro"
+#   db_name              = "aurora-instance"
+#   username             = "yagna"
+#   password             = "password"
+#   db_subnet_group_name = aws_db_subnet_group.aurora_subnet_group.name
+#   vpc_security_group_ids = [aws_security_group.aurora_db_sg.id]
+#   parameter_group_name  = aws_db_parameter_group.aurora_db_parameter_group.name
+
+#   # Optional: Additional configuration settings, like backup retention, can be added here
+# }
+
+# output "aurora_endpoint" {
+#   value = aws_db_instance.aurora_db.endpoint
+# }
+
+
+### Use aws_rds_cluster when: You require a highly available database with automatic failover. 
+### Aurora clusters are designed for this purpose and provide better resilience.
+### If Your application demands read scalability and the ability to add read replicas as needed. Aurora clusters offer this capability.
+### If You want a distributed, fault-tolerant database solution with data replication across multiple Availability Zones.
+
+resource "aws_rds_cluster" "default" {
+  cluster_identifier      = "aurora-cluster-demo"
+  engine                  = "aurora-mysql"
+  engine_version          = "5.7.mysql_aurora.2.03.2"
+  availability_zones      = ["us-west-2a", "us-west-2b", "us-west-2c"]
+  database_name           = "mydb"
+  master_username         = "foo"
+  master_password         = "bar"
+  backup_retention_period = 5
+  preferred_backup_window = "07:00-09:00"
 }
