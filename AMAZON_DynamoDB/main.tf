@@ -29,9 +29,10 @@ resource "aws_dynamodb_table" "example" {
 
 resource "aws_lambda_function" "example" {
   function_name = "ExampleFunction"
-  handler      = "index.handler"
-  runtime      = "nodejs14.x"
-  role         = aws_iam_role.example.arn
+  filename      = "lambda_function_payload.zip"
+  handler       = "index.handler"
+  runtime       = "nodejs14.x"
+  role          = aws_iam_role.example.arn
 }
 
 
