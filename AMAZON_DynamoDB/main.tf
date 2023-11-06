@@ -1,3 +1,17 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
+provider "aws" {
+  region = "us-east-1"  # Set your desired AWS region
+}
+
+
 resource "aws_dynamodb_table" "tf_notes_table" {
  name = "tf-notes-table-yv"
  billing_mode = "PROVISIONED"
