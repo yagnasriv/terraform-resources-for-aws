@@ -31,7 +31,7 @@ resource "aws_lambda_function" "example" {
   function_name = "ExampleFunction"
   filename      = "lambda_function_payload.zip"
   handler       = "index.handler"
-  runtime       = "nodejs14.x"
+  runtime       = "nodejs18.x"
   role          = aws_iam_role.example.arn
 }
 
