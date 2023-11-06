@@ -34,9 +34,10 @@ resource "aws_dynamodb_table" "example" {
 ### Create an AWS Lambda function Resource 
 
 resource "aws_lambda_function" "example" {
+  filename = "lambda.zip"
   function_name = "ExampleFunction-yv"
   handler      = "index.handler"
-  runtime      = "nodejs14.x"
+  runtime      = "nodejs18.x"
   role         = aws_iam_role.example.arn
 
   s3_bucket = "s3-bucker-for-dynamodb"
@@ -46,8 +47,8 @@ resource "aws_lambda_function" "example" {
 
 data "archive_file" "lambda" {
   type        = "zip"
-  source_dir  = "${path.module}/lambda"
-  output_path = "${path.module}/lambda.zip"
+  source_file  = "lambda.js"
+  output_path = "lambda.zip"
 }
 
 
