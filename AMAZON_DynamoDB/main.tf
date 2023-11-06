@@ -34,7 +34,7 @@ resource "aws_dynamodb_table" "example" {
 ### Create an AWS Lambda function Resource 
 
 resource "aws_lambda_function" "example" {
-  filename = "lambda.zip"
+
   function_name = "ExampleFunction-yv"
   handler      = "index.handler"
   runtime      = "nodejs18.x"
