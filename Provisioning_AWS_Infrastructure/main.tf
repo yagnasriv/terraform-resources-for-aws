@@ -40,8 +40,8 @@ resource "aws_s3_bucket" "example" {
     Environment = "Dev"
   }
 
-  versioning {
-     enabled = true
-  }
+  # versioning {
+  #    enabled = true
+  # }
 
 }
