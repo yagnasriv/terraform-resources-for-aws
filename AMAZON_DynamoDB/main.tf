@@ -11,48 +11,31 @@ provider "aws" {
   region = "us-east-1"  # Set your desired AWS region
 }
 
-### Create a Dynamo DB Table Resource 
+### Terraform Resource for creating DynamoDB
 
 resource "aws_dynamodb_table" "example" {
-  name           = "ExampleTable-yv"
+  name           = "ExampleTable"
   billing_mode   = "PAY_PER_REQUEST"  # Use "PROVISIONED" for provisioned throughput
   hash_key       = "id"
-  range_key      = "timestamp"
 
   attribute {
     name = "id"
     type = "S"
   }
-
-  attribute {
-    name = "timestamp"
-    type = "N"
-  }
 }
 
 
-### Create an AWS Lambda function Resource 
+#### Terraform Resource for creating AWS Lambda
 
 resource "aws_lambda_function" "example" {
-
-  function_name = "ExampleFunction-yv"
+  function_name = "ExampleFunction"
   handler      = "index.handler"
-  runtime      = "nodejs18.x"
+  runtime      = "nodejs14.x"
   role         = aws_iam_role.example.arn
-
-  s3_bucket = "s3-bucker-for-dynamodb"
-  s3_key    = "lambda.zip"
-
-}
-
-data "archive_file" "lambda" {
-  type        = "zip"
-  source_file  = "lambda.js"
-  output_path = "lambda.zip"
 }
 
 
-### Create an AWS IAM Role 
+### Terraform resource for creating an IAM role
 
 resource "aws_iam_role" "example" {
   name = "ExampleRole"
@@ -69,32 +52,18 @@ resource "aws_iam_role" "example" {
   })
 }
 
-resource "aws_iam_policy" "dynamodb" {
-  name        = "DynamoDBPolicy"
-  description = "IAM policy for DynamoDB access"
 
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [{
-      Action = [
-        "dynamodb:DescribeStream",
-        "dynamodb:GetRecords",
-        "dynamodb:GetShardIterator",
-        "dynamodb:ListStreams",
-      ],
-      Effect   = "Allow",
-      Resource = aws_dynamodb_table.example.arn
-    }]
-  })
-}
+#### Configure the DynamoDB Stream Trigger for Lambda
 
-resource "aws_iam_role_policy_attachment" "dynamodb" {
-  policy_arn = aws_iam_policy.dynamodb.arn
-  role       = aws_iam_role.example.name
+resource "aws_lambda_event_source_mapping" "example" {
+  event_source_arn = aws_dynamodb_table.example.stream_arn
+  function_name    = aws_lambda_function.example.function_name
+  batch_size       = 5
 }
 
 
-### DEfine DynamoDB Stream ARN
+### You'll need to retrieve the DynamoDB Stream ARN from the DynamoDB table to use it as an event source in the Lambda function. 
+### Add the following code to your Terraform configuration:
 
 data "aws_dynamodb_table" "example" {
   name = aws_dynamodb_table.example.name
@@ -103,4 +72,3 @@ data "aws_dynamodb_table" "example" {
 output "dynamodb_stream_arn" {
   value = aws_dynamodb_table.example.stream_arn
 }
-
