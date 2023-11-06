@@ -30,6 +30,7 @@ resource "aws_dynamodb_table" "example" {
 resource "aws_lambda_function" "example" {
   function_name = "ExampleFunction"
   filename      = "lambda_function_payload.zip"
+  source_code_hash = filebase64sha256("lambda_function_payload.zip")
   handler       = "index.handler"
   runtime       = "nodejs18.x"
   role          = aws_iam_role.example.arn
