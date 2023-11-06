@@ -11,43 +11,95 @@ provider "aws" {
   region = "us-east-1"  # Set your desired AWS region
 }
 
-resource "aws_dynamodb_table" "tf_notes_table" { 
-   name = "tf-notes-table-03" 
-   billing_mode = "PROVISIONED" 
-   read_capacity = "30" 
-   write_capacity = "30" 
-   attribute { 
-      name = "noteId" 
-      type = "S" 
-   } 
-   hash_key = "noteId" 
-   ttl { 
-     enabled = true
-     attribute_name = "expiryPeriod"  
-   }
-   point_in_time_recovery { enabled = true } 
-   server_side_encryption { enabled = true } 
-   lifecycle { ignore_changes = [ "write_capacity", "read_capacity" ] }
-} 
+### Create a Dynamo DB Table Resource 
 
-module  "table_autoscaling" { 
-   source = "snowplow-devops/dynamodb-autoscaling/aws" 
-   table_name = aws_dynamodb_table.tf_notes_table.name
+resource "aws_dynamodb_table" "example" {
+  name           = "ExampleTable-yv"
+  billing_mode   = "PAY_PER_REQUEST"  # Use "PROVISIONED" for provisioned throughput
+  hash_key       = "id"
+  range_key      = "timestamp"
+
+  attribute {
+    name = "id"
+    type = "S"
+  }
+
+  attribute {
+    name = "timestamp"
+    type = "N"
+  }
 }
 
 
-# resource "aws_dynamodb_table" "tf_notes_table" {
-#  name = "tf-notes-table-yv02"
-#  billing_mode = "PROVISIONED"
-#  read_capacity= "30"
-#  write_capacity= "30"
-#  attribute {
-#   name = "noteId"
-#   type = "S"
-#  }
-#  hash_key = "noteId"
-#  point_in_time_recovery {
-#    enabled = true
-#  }
+### Create an AWS Lambda function Resource 
 
-# }
+resource "aws_lambda_function" "example" {
+  function_name = "ExampleFunction-yv"
+  handler      = "index.handler"
+  runtime      = "nodejs14.x"
+  role         = aws_iam_role.example.arn
+
+  s3_bucket = "s3-bucker-for-dynamodb"
+  s3_key    = "lambda.zip"
+
+}
+
+data "archive_file" "lambda" {
+  type        = "zip"
+  source_dir  = "${path.module}/lambda"
+  output_path = "${path.module}/lambda.zip"
+}
+
+
+### Create an AWS IAM Role 
+
+resource "aws_iam_role" "example" {
+  name = "ExampleRole"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Action = "sts:AssumeRole",
+      Effect = "Allow",
+      Principal = {
+        Service = "lambda.amazonaws.com"
+      }
+    }]
+  })
+}
+
+resource "aws_iam_policy" "dynamodb" {
+  name        = "DynamoDBPolicy"
+  description = "IAM policy for DynamoDB access"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Action = [
+        "dynamodb:DescribeStream",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:ListStreams",
+      ],
+      Effect   = "Allow",
+      Resource = aws_dynamodb_table.example.arn
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "dynamodb" {
+  policy_arn = aws_iam_policy.dynamodb.arn
+  role       = aws_iam_role.example.name
+}
+
+
+### DEfine DynamoDB Stream ARN
+
+data "aws_dynamodb_table" "example" {
+  name = aws_dynamodb_table.example.name
+}
+
+output "dynamodb_stream_arn" {
+  value = aws_dynamodb_table.example.stream_arn
+}
+
