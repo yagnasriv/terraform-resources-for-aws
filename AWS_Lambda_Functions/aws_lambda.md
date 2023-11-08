@@ -71,5 +71,15 @@ ________________________________________________________________________________
 ### When it comes to Cost Optimization why are you choosing Lambda functions instead of EC2 instances ? 
 - As a Devops Engineer, it is your job to check the active/ stale resources for cost optimization purpose.
 - Say a EBS is created 30 days back and it is not being used by anyone you need to either delete the unused service or send a notification to check if it is being used by anyone.
-- this can be task can be performed by using AWS Lambda functions by writing a code, you can govern the cost by using Lambda function.
-- 
+- This task can be performed by using AWS Lambda functions by writing a code, you can govern the cost by using Lambda function.
+- For checking the unused AWS Services / resources by the end users or the cost of the services being used in AWS, you can create a cron job in CloudWatch with a time like around 10am everyday to check the services using AWS Lambda function.
+- In general serverless, AWS Lambda function is event driven, it has to be triggered by a service like cloudwatch to check the cost or unused services and once it checks, it automatically tears down the function.
+
+___________________________________________________________________________________________________
+
+### Some of the best use cases of serverless architecture / Lambda
+    - Cost Optimization
+    - Security / Compliance of Organization
+    - Scope is Endless
+
+___________________________________________________________________________________________________
