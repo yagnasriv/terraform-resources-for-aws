@@ -1,0 +1,34 @@
+name: Deploy to Production
+
+on:
+  release:
+    types: [published]
+  push:
+    tags:
+      - 'v1.0.1'  # This matches semantic versioning tags like v1.0.0
+jobs:
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js (Example for a Node.js project)
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the application
+        run: npm run build
+
+      - name: Deploy to Production
+        env:
+          DEPLOYMENT_KEY: ${{ secrets.DEPLOYMENT_KEY }}  # Example secret for authentication
+        run: |
+          # Commands to deploy your application
+          ssh user@production-server "cd /path/to/app && git pull && npm install && pm2 restart app"
