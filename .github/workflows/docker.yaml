@@ -2,9 +2,10 @@ name: Docker Build and Push
 
 # Trigger the workflow when pushing to the main branch
 on:
-  push:
+  pull_request:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   build:
@@ -33,7 +34,7 @@ jobs:
           context: .
           file: ./Dockerfile  # Specify Dockerfile path
           push: true
-          tags: your-dockerhub-username/your-repo-name:latest
+          tags: yagnasriv/sample-repo01:latest
 
       # Step 5: Log out from Docker Hub (optional but good practice)
       - name: Log out from Docker Hub
